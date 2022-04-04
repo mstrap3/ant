@@ -29,7 +29,6 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Hashtable;
 import java.util.Map;
-import java.util.Optional;
 import java.util.Properties;
 import java.util.Set;
 import java.util.Stack;
@@ -340,8 +339,8 @@ public class Project implements ResourceFactory {
      * @return an appropriate classloader.
      */
     public AntClassLoader createClassLoader(final Path path) {
-        return createClassLoader(
-            Optional.ofNullable(getCoreLoader()).orElse(getClass().getClassLoader()), path);
+        return AntClassLoader
+            .newAntClassLoader(getClass().getClassLoader(), this, path, true);
     }
 
     /**
@@ -353,7 +352,8 @@ public class Project implements ResourceFactory {
      *
      * @return an appropriate classloader.
      */
-    public AntClassLoader createClassLoader(final ClassLoader parent, final Path path) {
+    public AntClassLoader createClassLoader(
+        final ClassLoader parent, final Path path) {
         return AntClassLoader.newAntClassLoader(parent, this, path, true);
     }
 
