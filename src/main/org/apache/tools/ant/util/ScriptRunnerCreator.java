@@ -21,7 +21,6 @@ import java.util.Collections;
 import java.util.EnumMap;
 import java.util.EnumSet;
 import java.util.Map;
-import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -155,8 +154,7 @@ public class ScriptRunnerCreator {
             managers = EnumSet.of(manager);
         }
         return managers.stream().map(RUNNER_FACTORIES::get)
-            .map(f -> f.getRunner(project, language, classLoader)).filter(Objects::nonNull)
-            .findFirst()
+            .map(f -> f.getRunner(project, language, classLoader)).findFirst()
             .orElseThrow(() -> new BuildException(
                 managers.stream().map(RUNNER_FACTORIES::get).map(f -> f.managerClass).collect(
                     Collectors.joining("|", "Unable to load script engine manager (", ")"))));
